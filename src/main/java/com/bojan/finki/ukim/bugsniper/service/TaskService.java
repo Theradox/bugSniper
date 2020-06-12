@@ -7,10 +7,12 @@ import java.util.List;
 
 public interface TaskService {
     Task save(Task task);
-    Task save(String message, Long categoryId);
+    Task update(Long id, String message, Long categoryId);
     Task findById(Long id);
     List<Task> findAll();
     void deleteById(Long id);
+    List<Task> findAllByCategory_Id(Long id);
+
 
 
 }

@@ -10,6 +10,7 @@ import com.bojan.finki.ukim.bugsniper.repository.TaskRepository;
 import com.bojan.finki.ukim.bugsniper.service.TaskService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -34,10 +35,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task save(String message, Long categoryId) {
+    public Task update(@RequestParam Long id, @RequestParam String message, @RequestParam Long categoryId) {
                 Category category = this.categoryRepostiory.findById(categoryId)
                 .orElseThrow(()->new CategoryNotFoundException(categoryId));
-                Task task = new Task(message, category);
+
+                Task task = this.taskRepository.findById(id)
+                        .orElseThrow(()-> new TaskNotFoundException(id));
+                task.setCategory(category);
+                task.setMessage(message);
                 return this.taskRepository.save(task);
 
     }
@@ -57,6 +62,11 @@ public class TaskServiceImpl implements TaskService {
     public void deleteById(Long id) {
             //Task task = this.taskRepository.findById(id);
         this.taskRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Task> findAllByCategory_Id(Long id) {
+        return this.taskRepository.findAllByCategory_Id(id);
     }
 
 }

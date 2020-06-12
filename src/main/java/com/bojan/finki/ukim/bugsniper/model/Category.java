@@ -24,4 +24,8 @@ public class Category {
     @JsonIgnore
     List<Message> messages;
 
+    public Category(String description) {
+        this.description = description;
+    }
+    public Category(){}
 }
